@@ -52,6 +52,7 @@ class _SignupScreenState extends State<SignupScreen> {
               children: [
                 Column(
                   // -- HEADER
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Image(
                         image: AssetImage(tSignUpImage),
@@ -70,179 +71,184 @@ class _SignupScreenState extends State<SignupScreen> {
                   ],
                 ),
                 Container(
+                  // -- BODY
                   padding: const EdgeInsets.symmetric(vertical: 20),
                   child: Form(
                     key: _formKey,
                     child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            // -- RADIO
-                            mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          // -- RADIO
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Radio(
+                              value: 'student',
+                              groupValue: selectedOption,
+                              onChanged: (value) {
+                                setState(() {
+                                  selectedOption = value.toString();
+                                });
+                              },
+                            ),
+                            const Text('Student'),
+                            Radio(
+                              value: 'staff',
+                              groupValue: selectedOption,
+                              onChanged: (value) {
+                                setState(() {
+                                  selectedOption = value.toString();
+                                });
+                              },
+                            ),
+                            const Text('Staff'),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Center(
+                          // -- FORM
+                          child: Column(
                             children: [
-                              Radio(
-                                value: 'student',
-                                groupValue: selectedOption,
-                                onChanged: (value) {
-                                  setState(() {
-                                    selectedOption = value.toString();
-                                  });
-                                },
+                              SizedBox(
+                                // -- FULL NAME
+                                width: 300,
+                                child: TextFormField(
+                                  decoration: const InputDecoration(
+                                    labelText: tFullName,
+                                    prefixIcon: Icon(Icons.person_2_outlined),
+                                  ),
+                                ),
                               ),
-                              const Text('Student'),
-                              Radio(
-                                value: 'staff',
-                                groupValue: selectedOption,
-                                onChanged: (value) {
-                                  setState(() {
-                                    selectedOption = value.toString();
-                                  });
-                                },
+                              const SizedBox(
+                                height: 20,
                               ),
-                              const Text('Staff'),
-                            ],
-                          ),
-                          Center(
-                            // -- FORM
-                            child: Column(
-                              children: [
-                                SizedBox(
-                                  // -- FULL NAME
-                                  width: 300,
-                                  child: TextFormField(
-                                    decoration: const InputDecoration(
-                                      labelText: tFullName,
-                                      prefixIcon: Icon(Icons.person_2_outlined),
-                                    ),
+                              SizedBox(
+                                // -- EMAIL
+                                width: 300,
+                                child: TextFormField(
+                                  decoration: InputDecoration(
+                                    labelText: tEmail,
+                                    prefixIcon:
+                                        const Icon(Icons.email_outlined),
+                                    suffixText: selectedOption == 'student'
+                                        ? '@st.ug.edu.gh'
+                                        : '@ug.edu.gh',
                                   ),
                                 ),
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                                SizedBox(
-                                  // -- EMAIL
-                                  width: 300,
-                                  child: TextFormField(
-                                    decoration: InputDecoration(
-                                      labelText: tEmail,
-                                      prefixIcon:
-                                          const Icon(Icons.email_outlined),
-                                      suffixText: selectedOption == 'student'
-                                          ? '@st.ug.edu.gh'
-                                          : '@ug.edu.gh',
-                                    ),
+                              ),
+                              const SizedBox(
+                                height: tDefaultSize / 2,
+                              ),
+                              SizedBox(
+                                // -- PHONE NUMBER
+                                width: 300,
+                                child: TextFormField(
+                                  maxLength: 9,
+                                  decoration: const InputDecoration(
+                                    label: Text(tPhoneNo),
+                                    prefixIcon: Icon(Icons.phone),
+                                    prefix: Text('+233 '),
+                                    counterText: '',
                                   ),
                                 ),
-                                const SizedBox(
-                                  height: tDefaultSize / 2,
+                              ),
+                              const SizedBox(
+                                height: tDefaultSize / 2,
+                              ),
+                              SizedBox(
+                                // -- DEPARTMENTS
+                                width: 300,
+                                child: DropdownButtonFormField<String>(
+                                  value: null,
+                                  items: departments.map((String department) {
+                                    return DropdownMenuItem<String>(
+                                      value: department,
+                                      child: Text(department),
+                                    );
+                                  }).toList(),
+                                  onChanged: (selectedValue) {
+                                    setState(() {
+                                      selecteddepartment = selectedValue!;
+                                    });
+                                  },
+                                  decoration: const InputDecoration(
+                                      label: Text(tDept),
+                                      prefixIcon: Icon(Icons.local_library)),
                                 ),
+                              ),
+                              const SizedBox(
+                                height: tDefaultSize / 2,
+                              ),
+                              if (selectedOption == 'student')
                                 SizedBox(
-                                  // -- PHONE NUMBER
-                                  width: 300,
-                                  child: TextFormField(
-                                    maxLength: 9,
-                                    decoration: const InputDecoration(
-                                      label: Text(tPhoneNo),
-                                      prefixIcon: Icon(Icons.phone),
-                                      prefix: Text('+233 '),
-                                      counterText: '',
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: tDefaultSize / 2,
-                                ),
-                                SizedBox(
-                                  // -- DEPARTMENTS
+                                  // -- LEVELS
                                   width: 300,
                                   child: DropdownButtonFormField<String>(
                                     value: null,
-                                    items: departments.map((String department) {
+                                    items: levels.map((String level) {
                                       return DropdownMenuItem<String>(
-                                        value: department,
-                                        child: Text(department),
+                                        value: level,
+                                        child: Text(level),
                                       );
                                     }).toList(),
                                     onChanged: (selectedValue) {
                                       setState(() {
-                                        selecteddepartment = selectedValue!;
+                                        selectedlevel = selectedValue!;
                                       });
                                     },
                                     decoration: const InputDecoration(
-                                        label: Text(tDept),
-                                        prefixIcon: Icon(Icons.local_library)),
+                                        label: Text(tLevel),
+                                        prefixIcon: Icon(Icons.school)),
                                   ),
                                 ),
+                              if (selectedOption == 'student')
                                 const SizedBox(
-                                  height: tDefaultSize / 2,
+                                  height: 20,
                                 ),
-                                if (selectedOption == 'student')
-                                  SizedBox(
-                                    // -- LEVELS
-                                    width: 300,
-                                    child: DropdownButtonFormField<String>(
-                                      value: null,
-                                      items: levels.map((String level) {
-                                        return DropdownMenuItem<String>(
-                                          value: level,
-                                          child: Text(level),
-                                        );
-                                      }).toList(),
-                                      onChanged: (selectedValue) {
+                              SizedBox(
+                                // -- PASSWORD
+                                width: 300,
+                                child: TextFormField(
+                                  controller: _textEditingController,
+                                  initialValue: widget.initialValue,
+                                  obscureText: !_isPasswordVisible,
+                                  decoration: InputDecoration(
+                                    labelText: tPassword,
+                                    prefixIcon: const Icon(Icons.lock),
+                                    suffixIcon: GestureDetector(
+                                      onTap: () {
                                         setState(() {
-                                          selectedlevel = selectedValue!;
+                                          _isPasswordVisible =
+                                              !_isPasswordVisible;
                                         });
                                       },
-                                      decoration: const InputDecoration(
-                                          label: Text(tLevel),
-                                          prefixIcon: Icon(Icons.school)),
-                                    ),
-                                  ),
-                                if (selectedOption == 'student')
-                                  const SizedBox(
-                                    height: 20,
-                                  ),
-                                SizedBox(
-                                  // -- PASSWORD
-                                  width: 300,
-                                  child: TextFormField(
-                                    controller: _textEditingController,
-                                    initialValue: widget.initialValue,
-                                    obscureText: !_isPasswordVisible,
-                                    decoration: InputDecoration(
-                                      labelText: tPassword,
-                                      prefixIcon: const Icon(Icons.lock),
-                                      suffixIcon: GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            _isPasswordVisible =
-                                                !_isPasswordVisible;
-                                          });
-                                        },
-                                        child: Icon(
-                                          _isPasswordVisible
-                                              ? Icons.visibility_off
-                                              : Icons.visibility,
-                                        ),
+                                      child: Icon(
+                                        _isPasswordVisible
+                                            ? Icons.visibility_off
+                                            : Icons.visibility,
                                       ),
                                     ),
                                   ),
                                 ),
-                                const SizedBox(
-                                  height: tDefaultSize,
+                              ),
+                              const SizedBox(
+                                height: tDefaultSize,
+                              ),
+                              SizedBox(
+                                // -- BUTTON
+                                width: 300,
+                                child: ElevatedButton(
+                                  onPressed: () {},
+                                  child: Text(tSignup.toUpperCase()),
                                 ),
-                                SizedBox(
-                                  // -- BUTTON
-                                  width: 300,
-                                  child: ElevatedButton(
-                                    onPressed: () {},
-                                    child: Text(tSignup.toUpperCase()),
-                                  ),
-                                )
-                              ],
-                            ),
+                              )
+                            ],
                           ),
-                        ]),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 TextButton(
