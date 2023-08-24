@@ -1,3 +1,4 @@
+import 'package:classmate/src/ForgotPassword/forgotpasswordscreen.dart';
 import 'package:classmate/src/constants/sizes.dart';
 import 'package:classmate/src/constants/text_strings.dart';
 import 'package:flutter/material.dart';
@@ -131,18 +132,20 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(
-                      height: tDefaultSize / 2,
-                    ),
-                    // -- FORGOT PASSWORD BUTTON
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                        onPressed: () {},
-                        child: const Text(tForgotPassword),
-                      ),
-                    ),
                   ],
+                ),
+                const SizedBox(
+                  height: tDefaultSize / 2,
+                ),
+                Align(
+                  // -- FORGOT PASSWORD BUTTON
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                    onPressed: () {
+                      ForgotPasswordScreen.buildShowModalBottomSheet(context);
+                    },
+                    child: const Text(tForgotPassword),
+                  ),
                 ),
                 SizedBox(
                   // -- BUTTON
