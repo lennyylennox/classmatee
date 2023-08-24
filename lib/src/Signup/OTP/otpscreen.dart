@@ -21,7 +21,7 @@ class OTPScreen extends StatelessWidget {
     final size = MediaQuery.of(context).size;
 
     //final phoneNo = phoneNo;
-    var otp;
+    int otp;
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(

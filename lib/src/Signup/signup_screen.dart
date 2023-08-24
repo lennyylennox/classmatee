@@ -1,4 +1,6 @@
 import 'package:classmate/src/Login/login_screen.dart';
+import 'package:classmate/src/Signup/UserModules/usermodel.dart';
+import 'package:classmate/src/Signup/signupcontroller.dart';
 import 'package:classmate/src/constants/image_strings.dart';
 import 'package:classmate/src/constants/sizes.dart';
 import 'package:classmate/src/constants/text_strings.dart';
@@ -16,6 +18,7 @@ class SignupScreen extends StatefulWidget {
 
 class _SignupScreenState extends State<SignupScreen> {
   String selectedOption = 'student';
+  final controller = Get.put(SignupController());
   final _formKey = GlobalKey<FormState>();
   final List<String> departments = [
     'Computer Engineering',
@@ -115,6 +118,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                 // -- FULL NAME
                                 width: 300,
                                 child: TextFormField(
+                                  controller: controller.fullName,
                                   decoration: const InputDecoration(
                                     labelText: tFullName,
                                     prefixIcon: Icon(Icons.person_2_outlined),
@@ -128,6 +132,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                 // -- EMAIL
                                 width: 300,
                                 child: TextFormField(
+                                  controller: controller.email,
                                   decoration: InputDecoration(
                                     labelText: tEmail,
                                     prefixIcon:
@@ -145,6 +150,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                 // -- PHONE NUMBER
                                 width: 300,
                                 child: TextFormField(
+                                  controller: controller.phoneNo,
                                   maxLength: 9,
                                   decoration: const InputDecoration(
                                     label: Text(tPhoneNo),
@@ -211,7 +217,7 @@ class _SignupScreenState extends State<SignupScreen> {
                                 // -- PASSWORD
                                 width: 300,
                                 child: TextFormField(
-                                  controller: _textEditingController,
+                                  controller: controller.password,
                                   initialValue: widget.initialValue,
                                   obscureText: !_isPasswordVisible,
                                   decoration: InputDecoration(
@@ -237,13 +243,50 @@ class _SignupScreenState extends State<SignupScreen> {
                                 height: tDefaultSize,
                               ),
                               SizedBox(
-                                // -- BUTTON
-                                width: 300,
-                                child: ElevatedButton(
-                                  onPressed: () {},
-                                  child: Text(tSignup.toUpperCase()),
-                                ),
-                              )
+                                  // -- BUTTON
+                                  width: 300,
+                                  child: ElevatedButton(
+                                    onPressed: () async {
+                                      if (_formKey.currentState!.validate()) {
+                                        var number =
+                                            '+233 ${controller.phoneNo.text.trim()}';
+                                        String domain =
+                                            selectedOption == 'student'
+                                                ? '@st.ug.edu.gh'
+                                                : '@ug.edu.gh';
+                                        String userEmail =
+                                            controller.email.text.trim() +
+                                                domain;
+                                        if (selectedOption == 'student') {
+                                          final user = UserModel(
+                                            fullName:
+                                                controller.fullName.text.trim(),
+                                            email: userEmail,
+                                            password:
+                                                controller.password.text.trim(),
+                                            phoneNo: number,
+                                            department: selecteddepartment,
+                                            level: selectedlevel,
+                                          );
+                                          SignupController.instance
+                                              .createStudent(user);
+                                        } else {
+                                          final user = UserModel(
+                                            fullName:
+                                                controller.fullName.text.trim(),
+                                            email: userEmail,
+                                            password:
+                                                controller.password.text.trim(),
+                                            phoneNo: number,
+                                            department: selecteddepartment,
+                                          );
+                                          SignupController.instance
+                                              .createStaff(user);
+                                        }
+                                      }
+                                    },
+                                    child: Text(tSignup.toUpperCase()),
+                                  ))
                             ],
                           ),
                         ),

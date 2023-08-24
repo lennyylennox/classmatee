@@ -25,6 +25,7 @@ dependencies:
   firebase_auth_web: ^5.5.3
   cloud_firestore_web: ^3.6.2
   responsive_builder: ^0.7.0
+  mailer: ^6.0.1
 
 dev_dependencies:
   flutter_test:
