@@ -1,8 +1,10 @@
 import 'package:classmate/src/ForgotPassword/forgotpasswordscreen.dart';
+import 'package:classmate/src/Signup/signup_screen.dart';
 import 'package:classmate/src/constants/sizes.dart';
 import 'package:classmate/src/constants/text_strings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 
 class LoginScreen extends StatefulWidget {
   final String? initialValue;
@@ -158,7 +160,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 const SizedBox(height: 30.0),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () => Get.to(() => const SignupScreen()),
                   child: Text.rich(
                     TextSpan(
                       text: tDontHaveAnAccount,
