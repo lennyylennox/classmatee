@@ -1,14 +1,179 @@
+import 'package:classmate/src/constants/sizes.dart';
+import 'package:classmate/src/constants/text_strings.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
+class LoginScreen extends StatefulWidget {
+  final String? initialValue;
+  final TextEditingController? controller;
+  const LoginScreen({super.key, this.controller, this.initialValue});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  String selectedOption = 'student';
+  final _formKey = GlobalKey<FormState>();
+
+  bool _isPasswordVisible = false;
+  TextEditingController _textEditingController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.controller != null) {
+      _textEditingController = widget.controller!;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    var mediaQuery = MediaQuery.of(context);
+    var height = mediaQuery.size.height;
+    var width = mediaQuery.size.width;
     return SafeArea(
+      key: _formKey,
       child: Scaffold(
-        body: Center(
-          child: Text("Login"),
+        body: SingleChildScrollView(
+          child: Container(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              children: [
+                Column(
+                  // -- HEADER
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SvgPicture.asset(
+                      'assets/svgs/home.svg',
+                      semanticsLabel: 'Home SVG',
+                      width: width * 0.3,
+                      height: height * 0.3,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      tLoginTitle,
+                      style: Theme.of(context).textTheme.displayLarge,
+                    ),
+                    Text(
+                      tLoginSubTitle,
+                      style: Theme.of(context).textTheme.bodyLarge,
+                    ),
+                  ],
+                ),
+                Row(
+                  // -- RADIO
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Radio(
+                      value: 'student',
+                      groupValue: selectedOption,
+                      onChanged: (value) {
+                        setState(() {
+                          selectedOption = value.toString();
+                        });
+                      },
+                    ),
+                    const Text('Student'),
+                    Radio(
+                      value: 'staff',
+                      groupValue: selectedOption,
+                      onChanged: (value) {
+                        setState(() {
+                          selectedOption = value.toString();
+                        });
+                      },
+                    ),
+                    const Text('Staff'),
+                  ],
+                ),
+                Column(
+                  // -- FORM
+                  children: [
+                    SizedBox(
+                      width: width,
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                          prefixIcon: const Icon(Icons.email_outlined),
+                          suffixText: selectedOption == 'student'
+                              ? '@st.ug.edu.gh'
+                              : selectedOption == 'staff'
+                                  ? '@ug.edu.gh'
+                                  : '@gmail.com',
+                          labelText: tEmail,
+                          hintText: tEmail,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: tDefaultSize / 2,
+                    ),
+                    TextFormField(
+                      controller: _textEditingController,
+                      initialValue: widget.initialValue,
+                      obscureText: !_isPasswordVisible,
+                      decoration: InputDecoration(
+                        labelText: tPassword,
+                        prefixIcon: const Icon(Icons.lock),
+                        suffixIcon: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _isPasswordVisible = !_isPasswordVisible;
+                            });
+                          },
+                          child: Icon(
+                            _isPasswordVisible
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: tDefaultSize / 2,
+                    ),
+                    // -- FORGOT PASSWORD BUTTON
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton(
+                        onPressed: () {},
+                        child: const Text(tForgotPassword),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  // -- BUTTON
+                  width: double.infinity,
+                  child: ElevatedButton(
+                      onPressed: () {},
+                      child: Text(
+                        tLogin.toUpperCase(),
+                      )),
+                ),
+                const SizedBox(height: 30.0),
+                TextButton(
+                  onPressed: () {},
+                  child: Text.rich(
+                    TextSpan(
+                      text: tDontHaveAnAccount,
+                      style: Theme.of(context).textTheme.bodyLarge,
+                      children: [
+                        TextSpan(
+                          text: tSignup.toUpperCase(),
+                          style: const TextStyle(
+                            color: Colors.blue,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
