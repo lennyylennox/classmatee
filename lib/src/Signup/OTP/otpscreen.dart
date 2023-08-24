@@ -1,3 +1,5 @@
+// ignore_for_file: unused_local_variable, must_be_immutable
+
 import 'package:classmate/src/constants/image_strings.dart';
 import 'package:classmate/src/constants/sizes.dart';
 import 'package:classmate/src/constants/text_strings.dart';
