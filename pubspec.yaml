@@ -33,3 +33,13 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/images/
+    - assets/images/splashscreen/
+    - assets/images/onboarding/
+    - assets/images/welcome/
+    - assets/svgs/
+    - assets/images/forgot_password/
+    - assets/images/profile/
+    - assets/images/signup/
+    - assets/images/verifications/
