@@ -31,6 +31,21 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^2.0.0
 
+flutter_native_splash:
+  color: '#f7f6f1'
+  color_dark: '#272727'
+  image: assets/images/splashscreen/splashscreen-blackk.png
+  image_dark: assets/images/splashscreen/splashscreen-blackk.png
+
+  android_12:
+    image: assets/images/splashscreen/splashscreen-blackk.png
+    icon_background_color: '#f7f6f1'
+    image_dark: assets/images/splashscreen/splashscreen-blackk.png
+    icon_background_color_dark: '#272727'
+  
+  web: false
+  splash_screen_delay: 1200
+  
 flutter:
   uses-material-design: true
   assets:
