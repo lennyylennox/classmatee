@@ -29,6 +29,13 @@
             {
               "client_id": "983452743355-kd2sdikvf55jrilla9f3uuiejr08h7dl.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "983452743355-tivdd0unmjd9lduheaedsut6dp03i87t.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.classmate"
+              }
             }
           ]
         }
