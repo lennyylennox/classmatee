@@ -1,7 +1,6 @@
 import 'package:classmate/src/Dashboard/dashboard.dart';
 import 'package:classmate/src/Login/loginfailure.dart';
 import 'package:classmate/src/SignUp/Mail/mailverificationscreen.dart';
-import 'package:classmate/src/SignUp/UserModules/authentication_repository.dart';
 import 'package:classmate/src/Welcome/welcome_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -17,35 +16,6 @@ class LogInController extends GetxController {
   final email = TextEditingController();
   final password = TextEditingController();
   GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
-
-  /// [EmailAuthentication] - LOGIN
-  Future<void> loginWithEmailAndPassword(
-      String email, String password, BuildContext context) async {
-    try {
-      await _auth.signInWithEmailAndPassword(email: email, password: password);
-    } on FirebaseAuthException catch (e) {
-      final ex = LogInWithEmailAndPasswordFailure.code(e.code);
-      Get.snackbar(
-        "Oh Snap !",
-        ex.message,
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: Colors.redAccent.withOpacity(0.1),
-        colorText: Colors.red,
-        snackStyle: SnackStyle.FLOATING,
-      );
-    }
-    return;
-  }
-
-  void signInUser(String email, String password, BuildContext context) {
-    String? error =
-        loginWithEmailAndPassword(email, password, context) as String?;
-    final auth = AuthenticationRepository.instance;
-    auth.setInitialScreen(auth.firebaseUser);
-    if (error != null) {
-      Get.showSnackbar(GetSnackBar(message: error.toString()));
-    }
-  }
 
   Future<void> logInUser(
       String email, String password, BuildContext context) async {
@@ -64,9 +34,10 @@ class LogInController extends GetxController {
       }
     } on FirebaseAuthException catch (e) {
       // Handle authentication errors
+      final ex = LogInWithEmailAndPasswordFailure.code(e.code);
       Get.snackbar(
         "Authentication Error",
-        e.message!,
+        ex.message,
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: Colors.redAccent.withOpacity(0.1),
         colorText: Colors.red,
