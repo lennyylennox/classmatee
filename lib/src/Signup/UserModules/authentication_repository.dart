@@ -92,4 +92,66 @@ class AuthenticationRepository extends GetxController {
       throw ex.message;
     }
   }
+
+  /// [Logout]
+  Future<void> logout() async {
+    try {
+      await _auth.signOut();
+      Get.offAll(const WelcomeScreen());
+    } on FirebaseAuthException catch (e) {
+      throw e.message!;
+    } on FormatException catch (e) {
+      throw e.message;
+    } catch (e) {
+      throw 'Unable to logout. Try again';
+    }
+  }
+
+  /// [PhoneVerification] - VERIFICATION
+  Future<void> phoneAuthentication(String phoneNo) async {
+    codeSent.value = false;
+    await _auth.verifyPhoneNumber(
+        phoneNumber: phoneNo,
+        verificationCompleted: (credential) async {
+          await _auth.signInWithCredential(credential);
+        },
+        verificationFailed: (e) {
+          if (e.code == 'invalid-phone-number') {
+            Get.snackbar("Error", "The number is invalid");
+          } else {
+            Get.snackbar("Oh Snap !", "Something went wrong. Try again");
+          }
+        },
+        codeSent: (verificationId, resendToken) {
+          this.verificationId.value = verificationId;
+          codeSent.value = true;
+        },
+        codeAutoRetrievalTimeout: (verificationId) {
+          this.verificationId.value = verificationId;
+        });
+  }
+
+  /// [OTPVerification] - VERIFICATION
+  Future<bool> verifyOTP(String otp) async {
+    var credentials = await _auth.signInWithCredential(
+        PhoneAuthProvider.credential(
+            verificationId: verificationId.value, smsCode: otp));
+    return credentials.user != null ? true : false;
+  }
+
+  /// [Logout]
+  Future<void> fire() async {
+    try {
+      await _auth.signOut();
+      Get.offAll(const WelcomeScreen());
+    } on FirebaseAuthException catch (e) {
+      throw e.message!;
+    } on FormatException catch (e) {
+      throw e.message;
+    } catch (e) {
+      throw 'Unable to logout. Try again';
+    }
+  }
+
+  Future<void> signout() async {}
 }

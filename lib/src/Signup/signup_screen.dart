@@ -1,4 +1,5 @@
 import 'package:classmate/src/Login/login_screen.dart';
+import 'package:classmate/src/SignUp/OTP/otpscreen.dart';
 import 'package:classmate/src/Signup/UserModules/usermodel.dart';
 import 'package:classmate/src/Signup/signupcontroller.dart';
 import 'package:classmate/src/constants/image_strings.dart';
@@ -32,15 +33,6 @@ class _SignupScreenState extends State<SignupScreen> {
   String selecteddepartment = '';
 
   bool _isPasswordVisible = false;
-  TextEditingController _textEditingController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    if (widget.controller != null) {
-      _textEditingController = widget.controller!;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -280,6 +272,8 @@ class _SignupScreenState extends State<SignupScreen> {
                                             phoneNo: number,
                                             department: selecteddepartment,
                                           );
+                                          Get.offAll(() =>
+                                              OTPScreen(phoneNo: user.phoneNo));
                                           SignupController.instance
                                               .createStaff(user);
                                         }

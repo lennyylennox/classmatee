@@ -29,5 +29,8 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+        <meta-data
+        android:name="com.google.android.gms.safetynet.recaptcha_site_key"
+        android:value="YOUR_RECAPTCHA_SITE_KEY_HERE" />
     </application>
 </manifest>

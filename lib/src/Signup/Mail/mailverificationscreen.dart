@@ -1,3 +1,4 @@
+import 'package:classmate/src/Signup/Mail/mailverificationcontroller.dart';
 import 'package:classmate/src/constants/sizes.dart';
 import 'package:classmate/src/constants/text_strings.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,8 @@ class MailVerification extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(MailVerificationController());
+
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -52,28 +55,35 @@ class MailVerification extends StatelessWidget {
                     SizedBox(
                       width: 200,
                       child: OutlinedButton(
-                          child: Text(tContinue.tr), onPressed: () {}),
+                        child: Text(tContinue.tr),
+                        onPressed: () {
+                          controller.manuallyCheckEmailVerificationStatus();
+                        },
+                      ),
                     ),
                     const SizedBox(
                       height: tDefaultSize * 2,
                     ),
-                    TextButton(
+                    /*TextButton(
                       onPressed: () {},
                       child: Text(tResendEmailLink.tr),
-                    ),
+                    ),*/
                     TextButton(
-                        onPressed: () {},
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(
-                                LineAwesomeIcons.alternate_long_arrow_left),
-                            const SizedBox(
-                              width: 5,
-                            ),
-                            Text(tBacktoLogin.tr.toLowerCase()),
-                          ],
-                        ))
+                      onPressed: () {
+                        controller.logout();
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(
+                              LineAwesomeIcons.alternate_long_arrow_left),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          Text(tBacktoLogin.tr.toLowerCase()),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),

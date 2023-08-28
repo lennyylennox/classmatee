@@ -1,5 +1,6 @@
-// ignore_for_file: unused_local_variable, must_be_immutable
+// ignore_for_file: must_be_immutable, prefer_typing_uninitialized_variables
 
+import 'package:classmate/src/Signup/OTP/otpcontroller.dart';
 import 'package:classmate/src/constants/image_strings.dart';
 import 'package:classmate/src/constants/sizes.dart';
 import 'package:classmate/src/constants/text_strings.dart';
@@ -18,10 +19,12 @@ class OTPScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //final controller = Get.put(SignupController());
+    final otpcontroller = Get.put(OTPController());
     final size = MediaQuery.of(context).size;
 
     //final phoneNo = phoneNo;
-    int otp;
+    var otp;
     return SafeArea(
       child: Scaffold(
         body: SingleChildScrollView(
@@ -87,7 +90,10 @@ class OTPScreen extends StatelessWidget {
                   fillColor: Colors.black.withOpacity(0.1),
                   filled: true,
                   keyboardType: TextInputType.number,
-                  onSubmit: (code) {},
+                  onSubmit: (code) {
+                    otp = code;
+                    OTPController.instance.verifyOTP(otp);
+                  },
                 ),
                 const SizedBox(
                   height: 20.0,
@@ -106,31 +112,34 @@ class OTPScreen extends StatelessWidget {
                 const SizedBox(
                   height: 15.0,
                 ),
-                /*Align(
-                  alignment: Alignment.centerRight,
-                  child: TextButton(
-                    child: const Text("Get Code"),
-                    onPressed: () {
-                      otpcontroller.phoneAuthentication(phoneNo);
-                    },
-                  ),
-                ),*/
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: Obx(
-                    () => TextButton(
-                      onPressed: () {},
-                      child: Text("Code Sent"),
-                    ),
+                Obx(
+                  () => Align(
+                    alignment: Alignment.centerRight,
+                    child: otpcontroller.codeSent.value
+                        ? Text(
+                            "Code Sent") // Show "Code Sent" when code is sent
+                        : otpcontroller.isSendingCode.value
+                            ? CircularProgressIndicator(
+                                color: Colors.black,
+                              ) // Show CircularProgressIndicator while sending code
+                            : TextButton(
+                                onPressed: () {
+                                  otpcontroller.authenticatenumber(
+                                      phoneNo); // Call the sendOTP function
+                                },
+                                child: Text("Get Code"),
+                              ),
                   ),
                 ),
                 const SizedBox(
                   height: 15.0,
                 ),
                 SizedBox(
-                  width: double.infinity,
+                  width: 300,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      OTPController.instance.verifyOTP(otp);
+                    },
                     child: const Text(tNext),
                   ),
                 ),
