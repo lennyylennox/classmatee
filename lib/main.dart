@@ -1,9 +1,12 @@
 import 'package:classmate/firebase_options.dart';
 import 'package:classmate/src/Signup/UserModules/authentication_repository.dart';
 import 'package:classmate/src/Welcome/splash_screen.dart';
+import 'package:classmate/src/Welcome/welcome_screen.dart';
 import 'package:classmate/src/themes/theme.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 
@@ -16,6 +19,7 @@ Future<void> main() async {
       .then(
     (FirebaseApp value) => Get.put(AuthenticationRepository()),
   );
+  debugPaintSizeEnabled = false;
   runApp(const App());
 }
 
@@ -24,6 +28,12 @@ class App extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Widget homeScreen;
+    if (kIsWeb) {
+      homeScreen = const WelcomeScreen();
+    } else {
+      homeScreen = const SplashScreen();
+    }
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       theme: TAppTheme.lightTheme,
@@ -31,7 +41,7 @@ class App extends StatelessWidget {
       themeMode: ThemeMode.system,
       defaultTransition: Transition.leftToRightWithFade,
       transitionDuration: const Duration(milliseconds: 500),
-      home: SplashScreen(),
+      home: homeScreen,
     );
   }
 }
