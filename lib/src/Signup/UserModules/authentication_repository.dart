@@ -26,19 +26,30 @@ class AuthenticationRepository extends GetxController {
   // -- When app launches this function will be called and set the firebaseUser state
   @override
   void onReady() {
-    Future.delayed(const Duration(milliseconds: 2000));
+    Future.delayed(Duration(milliseconds: 2000));
     _firebaseUser = Rx<User?>(_auth.currentUser);
     _firebaseUser.bindStream(_auth.userChanges());
     FlutterNativeSplash.remove();
-    setInitialScreen(_firebaseUser.value);
+
+    // Determine the role based on the email domain
+    final selectedRole =
+        _firebaseUser.value?.email?.endsWith("@st.ug.edu.gh") == true
+            ? 'student'
+            : _firebaseUser.value?.email?.endsWith("@ug.edu.gh") == true
+                ? 'staff'
+                : 'admin'; // Or any default role if none matches
+
+    setInitialScreen(_firebaseUser.value, selectedRole);
   }
 
   // -- Setting Initial Screen
-  setInitialScreen(User? user) async {
+  setInitialScreen(User? user, String role) async {
     user == null
-        ? null //Get.offAll(() => const WelcomeScreen())
+        ? Get.offAll(() => const WelcomeScreen())
         : user.emailVerified
-            ? Get.offAll(() => const Dashboard())
+            ? Get.offAll(() => Dashboard(
+                  role: role,
+                ))
             : Get.offAll(() => const MailVerification());
   }
 
@@ -137,20 +148,6 @@ class AuthenticationRepository extends GetxController {
         PhoneAuthProvider.credential(
             verificationId: verificationId.value, smsCode: otp));
     return credentials.user != null ? true : false;
-  }
-
-  /// [Logout]
-  Future<void> fire() async {
-    try {
-      await _auth.signOut();
-      Get.offAll(const WelcomeScreen());
-    } on FirebaseAuthException catch (e) {
-      throw e.message!;
-    } on FormatException catch (e) {
-      throw e.message;
-    } catch (e) {
-      throw 'Unable to logout. Try again';
-    }
   }
 
   Future<void> signout() async {}

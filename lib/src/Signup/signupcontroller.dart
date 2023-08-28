@@ -1,6 +1,4 @@
 import 'package:classmate/src/SignUp/Mail/mailverificationscreen.dart';
-import 'package:classmate/src/Signup/OTP/otpscreen.dart';
-import 'package:classmate/src/Signup/UserModules/authentication_repository.dart';
 import 'package:classmate/src/Signup/UserModules/userrepository.dart';
 import 'package:classmate/src/Signup/signupfailure.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -20,33 +18,6 @@ class SignupController extends GetxController {
   String department = '';
 
   final userRepo = Get.put(UserRepository());
-
-  // -- Register New User
-  void registerUser(String email, String password, String phoneNo) async {
-    final auth = AuthenticationRepository.instance;
-    auth.createUserWithEmailAndPassword(email, password, phoneNo);
-    auth.sendEmailVerification();
-    auth.setInitialScreen(auth.firebaseUser);
-  }
-
-  void phoneAuthentication(String phoneNo) async {
-    AuthenticationRepository.instance.phoneAuthentication(phoneNo);
-    await Future.delayed(const Duration(seconds: 2));
-  }
-
-  /*Future<void> createStaff(UserModel user) async {
-    await userRepo.createStaff(user);
-    await userRepo.createUser(user);
-    registerUser(user.email, user.password, user.phoneNo);
-    Future.delayed(const Duration(seconds: 2));
-  }
-
-  Future<void> createStudent(UserModel user) async {
-    await userRepo.createStudent(user);
-    await userRepo.createUser(user);
-    registerUser(user.email, user.password, user.phoneNo);
-    Future.delayed(const Duration(seconds: 2));
-  }*/
 
   Future<bool> waitForEmailVerification(User user) async {
     while (true) {
@@ -89,7 +60,7 @@ class SignupController extends GetxController {
       Get.snackbar(
         "Oh Snap !",
         ex.message,
-        snackPosition: SnackPosition.BOTTOM,
+        snackPosition: SnackPosition.TOP,
         backgroundColor: Colors.redAccent.withOpacity(0.1),
         colorText: Colors.red,
       );
@@ -108,13 +79,14 @@ class SignupController extends GetxController {
       User? firebaseUser = FirebaseAuth.instance.currentUser;
       if (firebaseUser != null) {
         await firebaseUser.sendEmailVerification();
-        Get.to(() => OTPScreen(phoneNo: user.phoneNo));
+        //Get.to(() => OTPScreen(phoneNo: user.phoneNo));
+        Get.to(() => MailVerification());
 
         // Show a success message to the user
         Get.snackbar(
           "Success !",
           "Account Created. Let's get you verified",
-          snackPosition: SnackPosition.BOTTOM,
+          snackPosition: SnackPosition.TOP,
           backgroundColor: Colors.green.withOpacity(0.1),
           //snackStyle: SnackStyle.FLOATING,
           duration: const Duration(seconds: 2),
@@ -132,7 +104,7 @@ class SignupController extends GetxController {
       Get.snackbar(
         "Oh Snap !",
         ex.message,
-        snackPosition: SnackPosition.BOTTOM,
+        snackPosition: SnackPosition.TOP,
         backgroundColor: Colors.redAccent.withOpacity(0.1),
         colorText: Colors.red,
       );
