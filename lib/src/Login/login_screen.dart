@@ -1,4 +1,5 @@
 import 'package:classmate/src/ForgotPassword/forgotpasswordscreen.dart';
+import 'package:classmate/src/Login/logincontroller.dart';
 import 'package:classmate/src/Signup/signup_screen.dart';
 import 'package:classmate/src/constants/sizes.dart';
 import 'package:classmate/src/constants/text_strings.dart';
@@ -18,17 +19,9 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   String selectedOption = 'student';
   final _formKey = GlobalKey<FormState>();
+  final controller = Get.put(LogInController());
 
   bool _isPasswordVisible = false;
-  TextEditingController _textEditingController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    if (widget.controller != null) {
-      _textEditingController = widget.controller!;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -98,6 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     SizedBox(
                       width: width,
                       child: TextFormField(
+                        controller: controller.email,
                         decoration: InputDecoration(
                           prefixIcon: const Icon(Icons.email_outlined),
                           suffixText: selectedOption == 'student'
@@ -114,7 +108,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: tDefaultSize / 2,
                     ),
                     TextFormField(
-                      controller: _textEditingController,
+                      controller: controller.password,
                       initialValue: widget.initialValue,
                       obscureText: !_isPasswordVisible,
                       decoration: InputDecoration(
@@ -151,12 +145,30 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 SizedBox(
                   // -- BUTTON
-                  width: double.infinity,
+                  width: 300,
                   child: ElevatedButton(
-                      onPressed: () {},
-                      child: Text(
-                        tLogin.toUpperCase(),
-                      )),
+                    onPressed: () {
+                      String domain;
+                      if (selectedOption == 'student') {
+                        domain = '@st.ug.edu.gh';
+                      } else if (selectedOption == 'staff') {
+                        domain = '@ug.edu.gh';
+                      } else {
+                        domain = '@gmail.com'; // Default domain for other cases
+                      }
+
+                      String email = controller.email.text.trim() + domain;
+
+                      controller.logInUser(
+                        email,
+                        controller.password.text.trim(),
+                        context,
+                      );
+                    },
+                    child: Text(
+                      tLogin.toUpperCase(),
+                    ),
+                  ),
                 ),
                 const SizedBox(height: 30.0),
                 TextButton(
