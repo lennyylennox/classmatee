@@ -18,7 +18,7 @@ class LogInController extends GetxController {
   GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
 
   Future<void> logInUser(
-      String email, String password, BuildContext context) async {
+      String email, String password, BuildContext context, role) async {
     try {
       final authResult = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
@@ -27,7 +27,7 @@ class LogInController extends GetxController {
 
       if (authResult.user != null && authResult.user!.emailVerified) {
         // User is signed in and email is verified, navigate to the Dashboard screen
-        Get.offAll(() => Dashboard());
+        Get.offAll(() => Dashboard(role: role));
       } else {
         // Email is not verified, show a message
         Get.offAll(() => MailVerification());

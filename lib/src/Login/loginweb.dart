@@ -195,10 +195,10 @@ class _LoginScreenWebState extends State<LoginScreenWeb> {
                                 controller.email.text.trim() + domain;
 
                             controller.logInUser(
-                              email,
-                              controller.password.text.trim(),
-                              context,
-                            );
+                                email,
+                                controller.password.text.trim(),
+                                context,
+                                selectedOption);
                           },
                           child: Text(
                             tLogin.toUpperCase(),
