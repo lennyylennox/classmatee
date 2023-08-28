@@ -64,10 +64,12 @@ class MailVerification extends StatelessWidget {
                     const SizedBox(
                       height: tDefaultSize * 2,
                     ),
-                    /*TextButton(
-                      onPressed: () {},
+                    TextButton(
+                      onPressed: () {
+                        controller.sendVerificationEmail();
+                      },
                       child: Text(tResendEmailLink.tr),
-                    ),*/
+                    ),
                     TextButton(
                       onPressed: () {
                         controller.logout();

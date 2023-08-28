@@ -19,7 +19,18 @@ class MailVerificationController extends GetxController {
 
   // -- Send OR Resend Email Verification
   Future<void> sendVerificationEmail() async {
-    await AuthenticationRepository.instance.sendEmailVerification();
+    try {
+      await AuthenticationRepository.instance.sendEmailVerification();
+      Get.snackbar("Success !", "Email Sent");
+    } on FirebaseAuthException catch (e) {
+      Get.snackbar(
+        "Oh Snap !",
+        e.code,
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: Colors.redAccent.withOpacity(0.1),
+        colorText: Colors.red,
+      );
+    }
   }
 
   // -- Set Timer To Check If Verification Has Been Completed Then Redirect
@@ -30,9 +41,23 @@ class MailVerificationController extends GetxController {
       final user = auth.currentUser;
       if (user!.emailVerified) {
         timer.cancel();
-        AuthenticationRepository.instance.setInitialScreen(user);
+        // Determine the role based on the email domain
+        final selectedRole = user.email?.endsWith("@st.ug.edu.gh") == true
+            ? 'student'
+            : user.email?.endsWith("@ug.edu.gh") == true
+                ? 'staff'
+                : 'admin';
+        AuthenticationRepository.instance.setInitialScreen(user, selectedRole);
       }
     });
+  }
+
+  Future<void> resendEmailVerification() async {
+    // Send email verification
+    User? firebaseUser = FirebaseAuth.instance.currentUser;
+    if (firebaseUser != null) {
+      await firebaseUser.sendEmailVerification();
+    }
   }
 
   // -- Manually Check If Verification Completed Then Redirect
@@ -41,7 +66,13 @@ class MailVerificationController extends GetxController {
     auth.currentUser?.reload();
     final user = auth.currentUser;
     if (user!.emailVerified) {
-      AuthenticationRepository.instance.setInitialScreen(user);
+      // Determine the role based on the email domain
+      final selectedRole = user.email?.endsWith("@st.ug.edu.gh") == true
+          ? 'student'
+          : user.email?.endsWith("@ug.edu.gh") == true
+              ? 'staff'
+              : 'admin';
+      AuthenticationRepository.instance.setInitialScreen(user, selectedRole);
     } else {
       Get.snackbar(
         "Oopsie !",
