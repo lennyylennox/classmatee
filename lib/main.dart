@@ -36,8 +36,8 @@ class App extends StatelessWidget {
       //homeScreen = const AdminDashboardContent();
       homeScreen = const WelcomeScreen();
     } else {
-      //homeScreen = const SplashScreen();
-      homeScreen = const AdminDashboardContent();
+      homeScreen = const SplashScreen();
+      //homeScreen = const AdminDashboardContent();
     }
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
