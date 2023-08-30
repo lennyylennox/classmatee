@@ -52,14 +52,6 @@ class MailVerificationController extends GetxController {
     });
   }
 
-  Future<void> resendEmailVerification() async {
-    // Send email verification
-    User? firebaseUser = FirebaseAuth.instance.currentUser;
-    if (firebaseUser != null) {
-      await firebaseUser.sendEmailVerification();
-    }
-  }
-
   // -- Manually Check If Verification Completed Then Redirect
   void manuallyCheckEmailVerificationStatus() {
     final auth = FirebaseAuth.instance;

@@ -1,6 +1,7 @@
 import 'package:classmate/src/Dashboard/Profile/profilecontroller.dart';
 import 'package:classmate/src/Dashboard/Profile/profilemenuwidget.dart';
 import 'package:classmate/src/Dashboard/Profile/updateprofilescreen.dart';
+import 'package:classmate/src/Signup/UserModules/usermodel.dart';
 import 'package:classmate/src/constants/colors.dart';
 import 'package:classmate/src/constants/image_strings.dart';
 import 'package:classmate/src/constants/text_strings.dart';
@@ -48,6 +49,36 @@ class ProfileScreen extends StatelessWidget {
                     ),
                   ),
                 ],
+              ),
+              FutureBuilder(
+                future: controller.getUserData(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    if (snapshot.hasData) {
+                      UserModel userData = snapshot.data as UserModel;
+                      return Column(
+                        children: [
+                          Text(
+                            userData.fullName,
+                            style: Theme.of(context).textTheme.headlineMedium,
+                          ),
+                          Text(
+                            userData.email,
+                            style: Theme.of(context).textTheme.headlineMedium,
+                          ),
+                        ],
+                      );
+                    } else {
+                      return const Center(
+                        child: Text("Something went wrong"),
+                      );
+                    }
+                  } else {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                },
               ),
               const SizedBox(
                 height: 10,

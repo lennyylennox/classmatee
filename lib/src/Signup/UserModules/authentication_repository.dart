@@ -45,7 +45,7 @@ class AuthenticationRepository extends GetxController {
   // -- Setting Initial Screen
   setInitialScreen(User? user, String role) async {
     user == null
-        ? Get.offAll(() => const WelcomeScreen())
+        ? null //Get.offAll(() => const WelcomeScreen())
         : user.emailVerified
             ? Get.offAll(() => Dashboard(
                   role: role,

@@ -16,7 +16,7 @@ class TTextTheme {
     titleLarge: GoogleFonts.montserrat(
         color: tDarkColor, fontSize: 14, fontWeight: FontWeight.w600),
     bodyLarge: GoogleFonts.montserrat(
-        color: tDarkColor, fontSize: 14, fontWeight: FontWeight.normal),
+        color: tDarkColor, fontSize: 14, fontWeight: FontWeight.bold),
     bodyMedium: GoogleFonts.montserrat(
         color: tDarkColor, fontSize: 14, fontWeight: FontWeight.normal),
   );
@@ -27,13 +27,13 @@ class TTextTheme {
     displayMedium: GoogleFonts.montserrat(
         color: tWhiteColor, fontSize: 24, fontWeight: FontWeight.w700),
     displaySmall: GoogleFonts.poppins(
-        color: tWhiteColor, fontSize: 24, fontWeight: FontWeight.w700),
+        color: tWhiteColor, fontSize: 20, fontWeight: FontWeight.w700),
     headlineMedium: GoogleFonts.montserrat(
         color: tWhiteColor, fontSize: 14, fontWeight: FontWeight.w600),
     titleLarge: GoogleFonts.montserrat(
         color: tWhiteColor, fontSize: 14, fontWeight: FontWeight.w600),
     bodyLarge: GoogleFonts.montserrat(
-        color: tWhiteColor, fontSize: 14, fontWeight: FontWeight.normal),
+        color: tWhiteColor, fontSize: 14, fontWeight: FontWeight.bold),
     bodyMedium: GoogleFonts.montserrat(
         color: tWhiteColor, fontSize: 14, fontWeight: FontWeight.normal),
   );

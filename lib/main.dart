@@ -1,4 +1,7 @@
+// ignore_for_file: unused_import
+
 import 'package:classmate/firebase_options.dart';
+import 'package:classmate/src/Dashboard/RoleAdmin/admincontent.dart';
 import 'package:classmate/src/Signup/UserModules/authentication_repository.dart';
 import 'package:classmate/src/Welcome/splash_screen.dart';
 import 'package:classmate/src/Welcome/welcome_screen.dart';
@@ -30,9 +33,11 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     Widget homeScreen;
     if (kIsWeb) {
+      //homeScreen = const AdminDashboardContent();
       homeScreen = const WelcomeScreen();
     } else {
-      homeScreen = const SplashScreen();
+      //homeScreen = const SplashScreen();
+      homeScreen = const AdminDashboardContent();
     }
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,

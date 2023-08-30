@@ -43,6 +43,9 @@ class SignupController extends GetxController {
         await firebaseUser.sendEmailVerification();
         //Get.to(() => OTPScreen(phoneNo: user.phoneNo));
         Get.to(() => MailVerification());
+        await userRepo.createStudent(user);
+        await userRepo.createUser(user);
+
         // Show a success message to the user
         Get.snackbar(
           "Success !",
@@ -81,6 +84,8 @@ class SignupController extends GetxController {
         await firebaseUser.sendEmailVerification();
         //Get.to(() => OTPScreen(phoneNo: user.phoneNo));
         Get.to(() => MailVerification());
+        await userRepo.createStaff(user);
+        await userRepo.createUser(user);
 
         // Show a success message to the user
         Get.snackbar(
